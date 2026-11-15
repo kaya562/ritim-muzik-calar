@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "Ritim Müzik Çalar",
+  "short_name": "Ritim",
+  "description": "Bilgisayarında ve telefonunda kullanabileceğin kişisel müzik çaların.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#101116",
+  "theme_color": "#101116",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

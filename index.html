@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101116">
+    <meta name="description" content="Bilgisayarında ve telefonunda kullanabileceğin kişisel müzik çaların.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <title>Ritim — Müzik Çalar</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <canvas class="rhythm-background" id="rhythm-background" aria-hidden="true"></canvas>
+    <main class="app">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Ritim ana sayfa">
+          <span class="brand-icon" aria-hidden="true">♫</span>
+          <span>ritim<span class="brand-dot">.</span></span>
+        </a>
+        <div class="topbar-actions">
+          <span class="local-badge"><span></span> Ücretsiz müzik arşivi</span>
+          <div class="appearance">
+            <button class="appearance-toggle" id="appearance-toggle" type="button" aria-expanded="false" aria-controls="appearance-panel" title="Arka plan ayarları">
+              <span aria-hidden="true">⚙</span>
+              <span class="appearance-label">Görünüm</span>
+            </button>
+            <div class="appearance-panel" id="appearance-panel" hidden>
+              <p class="appearance-title">Arka plan</p>
+              <div class="theme-options" role="group" aria-label="Arka plan teması">
+                <button class="theme-option" type="button" data-theme="default" aria-label="Yeşil gece teması" title="Yeşil gece">
+                  <span class="theme-swatch swatch-default"></span>
+                </button>
+                <button class="theme-option" type="button" data-theme="ocean" aria-label="Okyanus teması" title="Okyanus">
+                  <span class="theme-swatch swatch-ocean"></span>
+                </button>
+                <button class="theme-option" type="button" data-theme="violet" aria-label="Mor teması" title="Mor">
+                  <span class="theme-swatch swatch-violet"></span>
+                </button>
+                <button class="theme-option" type="button" data-theme="sunset" aria-label="Gün batımı teması" title="Gün batımı">
+                  <span class="theme-swatch swatch-sunset"></span>
+                </button>
+              </div>
+              <label class="auto-theme-toggle" for="auto-theme">
+                <span>
+                  <strong>Ritimle hareket etsin</strong>
+                  <small>Arka plan müzikle canlansın</small>
+                </span>
+                <input id="auto-theme" type="checkbox">
+                <span class="switch" aria-hidden="true"></span>
+              </label>
+              <label class="custom-background" for="custom-background">
+                <span>Özel renk seç</span>
+                <input id="custom-background" type="color" value="#101116">
+              </label>
+            </div>
+          </div>
+          <button class="install-button" id="install-app" type="button" hidden>Uygulamayı yükle</button>
+        </div>
+      </header>
+
+      <section class="layout">
+        <div class="main-column">
+          <section class="welcome">
+            <h1>Müziğin <span>ritmi</span></h1>
+            <p class="intro">Listeden bir parça seç, dinlemeye başla.</p>
+            <button class="select-button" id="select-music" type="button">
+              <span aria-hidden="true">＋</span> Kendi müziğini ekle
+            </button>
+            <button class="folder-button" id="scan-folder" type="button">Müzik klasörünü tara</button>
+            <input id="file-picker" type="file" accept="audio/*" multiple hidden>
+            <input id="folder-picker" type="file" accept="audio/*" webkitdirectory directory multiple hidden>
+            <p class="library-status" id="library-status" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="playlist-section" aria-labelledby="playlist-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">SENİN İÇİN SEÇİLDİ</p>
+                <h2 id="playlist-title">Şarkı listesi</h2>
+              </div>
+              <span class="track-count" id="track-count">0 parça</span>
+            </div>
+            <p class="download-note">Bir parçaya dokun, müzik çalmaya başlasın.</p>
+            <label class="sr-only" for="track-search">Eklenen müziklerde ara</label>
+            <input id="track-search" class="track-search" type="search" placeholder="Müziklerinde ara…" autocomplete="off">
+            <div class="drop-area" id="drop-area">
+              <div class="empty-state" id="empty-state">
+                <span class="empty-icon" aria-hidden="true">♫</span>
+                <p>Listede henüz parça yok</p>
+                <span>Kendi müziğini ekleyerek dinlemeye başla.</span>
+              </div>
+              <ul class="track-list" id="track-list" aria-label="Çalma listesi"></ul>
+              <p class="no-matches" id="no-matches" hidden>Bu isimde müzik bulunamadı.</p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="now-playing">
+          <p class="eyebrow">ŞİMDİ ÇALIYOR</p>
+          <div class="artwork" id="artwork" aria-hidden="true">
+            <div class="art-glow"></div>
+            <div class="art-note">♫</div>
+            <div class="art-equalizer"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="track-info">
+            <h2 id="current-title">Bir parça seç</h2>
+            <p id="current-artist">Müziğin burada başlayacak</p>
+          </div>
+          <audio id="audio" preload="metadata"></audio>
+          <div class="progress-area">
+            <input id="progress" class="range" type="range" min="0" max="1000" value="0" aria-label="Parça konumu">
+            <div class="time-row"><span id="current-time">0:00</span><span id="duration">0:00</span></div>
+          </div>
+          <div class="controls">
+            <button class="icon-button secondary" id="shuffle" type="button" aria-label="Karışık çal" title="Karışık çal" aria-pressed="false">⤨</button>
+            <button class="icon-button" id="previous" type="button" aria-label="Önceki parça" title="Önceki parça">|◀</button>
+            <button class="play-button" id="play" type="button" aria-label="Çal" title="Çal">▶</button>
+            <button class="icon-button" id="next" type="button" aria-label="Sonraki parça" title="Sonraki parça">▶|</button>
+            <button class="icon-button secondary" id="repeat" type="button" aria-label="Tekrarla" title="Tekrarla" aria-pressed="false">↻</button>
+          </div>
+          <div class="volume-row">
+            <span aria-hidden="true">−</span>
+            <input id="volume" class="range volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Ses seviyesi">
+            <span aria-hidden="true">+</span>
+          </div>
+        </aside>
+      </section>
+      <footer>Ritim · Eklediğin kişisel müzik dosyaları cihazından dışarı çıkmaz.</footer>
+    </main>
+  </body>
+</html>

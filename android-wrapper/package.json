@@ -1,0 +1,19 @@
+{
+  "name": "ritim-android",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Android uygulama paketi for Ritim music player",
+  "scripts": {
+    "copy:web": "node copy-web-assets.mjs",
+    "android:setup": "npm run copy:web && cap add android",
+    "android:sync": "npm run copy:web && cap sync android",
+    "android:apk": "npm run android:sync && cd android && gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2"
+  }
+}

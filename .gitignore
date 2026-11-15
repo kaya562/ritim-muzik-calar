@@ -1,0 +1,9 @@
+android-wrapper/node_modules/
+android-wrapper/www/
+android-wrapper/android/.gradle/
+android-wrapper/android/local.properties
+android-wrapper/android/build/
+android-wrapper/android/app/build/
+android-wrapper/android/capacitor-cordova-android-plugins/build/
+android-wrapper/android/.idea/
+android-wrapper/android/.DS_Store
