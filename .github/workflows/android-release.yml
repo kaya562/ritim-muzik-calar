@@ -29,10 +29,11 @@ jobs:
         run: npm ci
       - name: Build APK
         working-directory: android-wrapper
+        shell: bash
         run: |
           npm run android:sync
           cd android
-          ./gradlew assembleDebug
+          gradle assembleDebug
       - name: Publish APK release
         uses: softprops/action-gh-release@v2
         with:
